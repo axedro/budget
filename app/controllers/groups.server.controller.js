@@ -13,7 +13,8 @@ var mongoose = require('mongoose'),
  */
 exports.create = function(req, res) {
 	var group = new Group(req.body);
-	group.user = req.user;
+	group.users.push(req.user);
+	//group.user = req.user;
 
 	group.save(function(err) {
 		if (err) {
@@ -21,6 +22,14 @@ exports.create = function(req, res) {
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
+			req.user.groups.push(group);
+    		req.user.save(function(err) {
+      			if (err) {
+        			return res.status(400).send({
+						message: errorHandler.getErrorMessage(err)
+        			});
+        		}
+        	});
 			res.jsonp(group);
 		}
 	});
@@ -73,7 +82,8 @@ exports.delete = function(req, res) {
  * List of Groups
  */
 exports.list = function(req, res) { 
-	Group.find().sort('-created').populate('user', 'displayName').exec(function(err, groups) {
+	//console.log(req);
+	Group.find({'users':req.user._id}).sort('-created').populate('users','displayName').exec(function(err, groups) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
@@ -88,7 +98,7 @@ exports.list = function(req, res) {
  * Group middleware
  */
 exports.groupByID = function(req, res, next, id) { 
-	Group.findById(id).populate('user', 'displayName').exec(function(err, group) {
+	Group.findById(id).populate('users').exec(function(err, group) {
 		if (err) return next(err);
 		if (! group) return next(new Error('Failed to load Group ' + id));
 		req.group = group ;

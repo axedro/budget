@@ -5,6 +5,23 @@ angular.module('groups').controller('GroupsController', ['$scope', '$stateParams
 	function($scope, $stateParams, $location, Authentication, Groups) {
 		$scope.authentication = Authentication;
 
+		this.groups = Groups.query(function(g) {
+				$scope.selected=g.slice();
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+		
+		$scope.selected = [];
+
+		$scope.toggle = function (item, list) {
+        	var idx = list.indexOf(item);
+	        if (idx > -1) list.splice(idx, 1);
+	        	else list.push(item);
+	      	};
+      	$scope.exists = function (item, list) {
+	        return list.indexOf(item) > -1;
+      	};
+
 		// Create new Group
 		$scope.create = function() {
 			// Create new Group object
@@ -14,7 +31,7 @@ angular.module('groups').controller('GroupsController', ['$scope', '$stateParams
 
 			// Redirect after save
 			group.$save(function(response) {
-				$location.path('groups/' + response._id);
+				$location.path('groups');
 
 				// Clear form fields
 				$scope.name = '';
@@ -45,7 +62,7 @@ angular.module('groups').controller('GroupsController', ['$scope', '$stateParams
 			var group = $scope.group;
 
 			group.$update(function() {
-				$location.path('groups/' + group._id);
+				$location.path('groups');
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});

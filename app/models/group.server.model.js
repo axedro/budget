@@ -20,10 +20,14 @@ var GroupSchema = new Schema({
 		type: Date,
 		default: Date.now
 	},
-	user: {
-		type: Schema.ObjectId,
-		ref: 'User'
-	}
+  	users: [{
+    	type: Schema.ObjectId,
+    	ref: 'User'
+  	}],
+  	projects: [{
+    	type: Schema.ObjectId,
+    	ref: 'Project'
+  	}]
 });
 
 mongoose.model('Group', GroupSchema);

@@ -75,6 +75,10 @@ var UserSchema = new Schema({
 		}],
 		default: ['user']
 	},
+	groups: [{
+    	type: Schema.Types.ObjectId, 
+    	ref: 'Group'
+  	}],
 	updated: {
 		type: Date
 	},

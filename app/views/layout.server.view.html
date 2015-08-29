@@ -44,11 +44,11 @@
 </head>
 
 <body class="ng-cloak">
-	<div layout="column" layout-fill>
+	<div flex layout="column" layout-fill>
 		<md-toolbar>
-			<header data-ng-include="'/modules/core/views/header.client.view.html'" class="md-toolbar-tools"></header>
+			<header data-ng-include="'/modules/core/views/header.client.view.html'"></header>
 		</md-toolbar>
-		<md-content class="md-padding">
+		<md-content flex layout-fill>
 			{% block content %}{% endblock %}
 		</md-content>
 	</div>

@@ -1,4 +1,28 @@
-<section data-ng-controller="GroupsController" data-ng-init="find()">
+<div layout="row" data-ng-controller="GroupsController as ul" >
+    <!-- Container #3 left groups -->
+    <md-sidenav md-is-locked-open="$mdMedia('gt-sm')" md-component-id="left" class="md-whiteframe-z3" >
+        
+            <md-toolbar class="md-accent">
+                <h2 class="md-toolbar-tools">Groups</h2>
+            </md-toolbar>
+            
+            <md-content class="md-padding">
+                <fieldset class="standard" flex>
+                    <div layout="row" layout-wrap >
+                        <md-progress-circular md-mode="indeterminate" ng-show="loading"></md-progress-circular>
+                        <div ng-repeat="item in ul.groups" >
+                            <md-checkbox ng-checked="exists(item, selected)" ng-click="toggle(item, selected)">
+                                {{ item.name }} 
+                            </md-checkbox>
+                        </div>
+                    </div>
+                </fieldset>
+            </md-content>
+        
+    </md-sidenav>
+</div>
+
+<!-- <section data-ng-controller="GroupsController" data-ng-init="find()">
     <div class="page-header">
         <h1>Groups</h1>
     </div>
@@ -16,4 +40,4 @@
     <div class="alert alert-warning text-center" data-ng-hide="!groups.$resolved || groups.length">
     	No Groups yet, why don't you <a href="/#!/groups/create">create one</a>?
     </div>
-</section>
+</section> -->
